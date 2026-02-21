@@ -9,14 +9,27 @@ from pathlib import Path
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
-                             precision_score, recall_score)
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from config import (MAX_DEPTH, MIN_SAMPLES_LEAF, MIN_SAMPLES_SPLIT, MODEL_PATH,
-                    MODELS_DIR, N_ESTIMATORS, PREPROCESSOR_PATH, RANDOM_STATE,
-                    TEST_SIZE)
+from config import (
+    MAX_DEPTH,
+    MIN_SAMPLES_LEAF,
+    MIN_SAMPLES_SPLIT,
+    MODEL_PATH,
+    MODELS_DIR,
+    N_ESTIMATORS,
+    PREPROCESSOR_PATH,
+    RANDOM_STATE,
+    TEST_SIZE,
+)
 
 logger = logging.getLogger(__name__)
 
