@@ -1,6 +1,7 @@
 """
 FastAPI server for serving predictions from the trained model
 """
+
 import logging
 import sys
 from pathlib import Path
@@ -29,16 +30,19 @@ model = None
 # Request/Response models
 class PredictRequest(BaseModel):
     """Request model for batch predictions"""
+
     features: List[List[float]]
 
 
 class PredictSingleRequest(BaseModel):
     """Request model for single prediction"""
+
     features: List[float]
 
 
 class PredictResponse(BaseModel):
     """Response model for batch predictions"""
+
     predictions: List[int]
     probabilities: List[List[float]]
     num_samples: int
@@ -46,6 +50,7 @@ class PredictResponse(BaseModel):
 
 class PredictSingleResponse(BaseModel):
     """Response model for single prediction"""
+
     prediction: int
     probabilities: List[float]
     confidence: float
@@ -53,6 +58,7 @@ class PredictSingleResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response"""
+
     status: str
     service: str
     version: str
@@ -60,6 +66,7 @@ class HealthResponse(BaseModel):
 
 class MetricsResponse(BaseModel):
     """Metrics response"""
+
     accuracy: float
     precision: float
     recall: float
@@ -68,6 +75,7 @@ class MetricsResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     """Error response"""
+
     error: str
 
 
@@ -96,9 +104,9 @@ async def lifespan(app: FastAPI):
     logger.info("Loading model...")
     load_model_startup()
     logger.info("FastAPI server started")
-    
+
     yield
-    
+
     # Shutdown
     logger.info("FastAPI server shutting down")
 
@@ -108,7 +116,7 @@ app = FastAPI(
     title="ML Classification API",
     description="Random Forest classifier API for multi-class predictions",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 
@@ -118,9 +126,7 @@ async def health():
     Health check endpoint
     """
     return HealthResponse(
-        status="healthy",
-        service="ML Classification API",
-        version="1.0.0"
+        status="healthy", service="ML Classification API", version="1.0.0"
     )
 
 
@@ -128,7 +134,7 @@ async def health():
 async def predict(request: PredictRequest):
     """
     Make predictions on provided features.
-    
+
     Expected request format:
     ```json
     {
@@ -140,36 +146,35 @@ async def predict(request: PredictRequest):
         if model is None:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Model not loaded. Please run training first."
+                detail="Model not loaded. Please run training first.",
             )
-        
+
         features = np.array(request.features)
-        
+
         # Validate input shape
         if features.ndim == 1:
             features = features.reshape(1, -1)
-        
+
         # Make predictions
         predictions = model.predict(features)
         probabilities = model.predict_proba(features)
-        
+
         return PredictResponse(
             predictions=predictions.tolist(),
             probabilities=probabilities.tolist(),
-            num_samples=len(predictions)
+            num_samples=len(predictions),
         )
-        
+
     except ValueError as e:
         logger.error(f"Invalid input: {str(e)}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid input: {str(e)}"
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid input: {str(e)}"
         )
     except Exception as e:
         logger.error(f"Prediction failed: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error"
+            detail="Internal server error",
         )
 
 
@@ -177,7 +182,7 @@ async def predict(request: PredictRequest):
 async def predict_single(request: PredictSingleRequest):
     """
     Make a prediction on a single sample.
-    
+
     Expected request format:
     ```json
     {
@@ -189,26 +194,26 @@ async def predict_single(request: PredictSingleRequest):
         if model is None:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Model not loaded. Please run training first."
+                detail="Model not loaded. Please run training first.",
             )
-        
+
         features = np.array(request.features).reshape(1, -1)
-        
+
         # Make prediction
         prediction = model.predict(features)[0]
         probabilities = model.predict_proba(features)[0]
-        
+
         return PredictSingleResponse(
             prediction=int(prediction),
             probabilities=probabilities.tolist(),
-            confidence=float(max(probabilities))
+            confidence=float(max(probabilities)),
         )
-        
+
     except Exception as e:
         logger.error(f"Prediction failed: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error"
+            detail="Internal server error",
         )
 
 
@@ -221,15 +226,14 @@ async def get_metrics():
         if model is None:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Model not loaded"
+                detail="Model not loaded",
             )
-        
+
         if model.metrics:
             return MetricsResponse(**model.metrics)
         else:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Metrics not available"
+                status_code=status.HTTP_404_NOT_FOUND, detail="Metrics not available"
             )
     except HTTPException:
         raise
@@ -237,7 +241,7 @@ async def get_metrics():
         logger.error(f"Failed to get metrics: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error"
+            detail="Internal server error",
         )
 
 
@@ -251,10 +255,4 @@ async def get_docs():
 
 if __name__ == "__main__":
     logger.info("Starting FastAPI server...")
-    uvicorn.run(
-        "app:app",
-        host="0.0.0.0",
-        port=5000,
-        reload=False,
-        log_level="info"
-    )
+    uvicorn.run("app:app", host="0.0.0.0", port=5000, reload=False, log_level="info")

@@ -1,6 +1,7 @@
 """
 Configuration settings for the ML project
 """
+
 import os
 from pathlib import Path
 
