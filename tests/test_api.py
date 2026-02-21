@@ -14,8 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 from sklearn.model_selection import train_test_split
 
 import app as app_module
-from config import (MODEL_PATH, MODELS_DIR, PREPROCESSOR_PATH, RANDOM_STATE,
-                    TEST_SIZE)
+from config import MODEL_PATH, MODELS_DIR, PREPROCESSOR_PATH, RANDOM_STATE, TEST_SIZE
 from data_generator import generate_dummy_dataset
 from model import RandomForestModel
 
