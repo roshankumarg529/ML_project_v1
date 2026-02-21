@@ -1,0 +1,10 @@
+# Create .gitignore
+echo "data/
+models/
+logs/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/" > .gitignore
+
