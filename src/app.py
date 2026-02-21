@@ -4,19 +4,20 @@ FastAPI server for serving predictions from the trained model
 
 import logging
 import sys
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import List
-from pydantic import BaseModel
+
 import numpy as np
+import uvicorn
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
-from contextlib import asynccontextmanager
-import uvicorn
+from pydantic import BaseModel
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import LOG_LEVEL, LOG_FORMAT, MODEL_PATH, PREPROCESSOR_PATH
+from config import LOG_FORMAT, LOG_LEVEL, MODEL_PATH, PREPROCESSOR_PATH
 from model import RandomForestModel
 
 # Setup logging

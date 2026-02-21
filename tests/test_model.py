@@ -4,16 +4,18 @@ Unit tests for the ML model
 
 import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+from sklearn.model_selection import train_test_split
+
 from config import RANDOM_STATE, TEST_SIZE
 from data_generator import generate_dummy_dataset
 from model import RandomForestModel
-from sklearn.model_selection import train_test_split
 
 
 def test_data_generation():

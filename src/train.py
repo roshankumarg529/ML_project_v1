@@ -5,13 +5,14 @@ Main training script for the ML model
 import logging
 import sys
 from pathlib import Path
+
 from sklearn.model_selection import train_test_split
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import RANDOM_STATE, TEST_SIZE, LOG_LEVEL, LOG_FORMAT
-from data_generator import generate_dummy_dataset, save_dataset, load_dataset
+from config import LOG_FORMAT, LOG_LEVEL, RANDOM_STATE, TEST_SIZE
+from data_generator import generate_dummy_dataset, load_dataset, save_dataset
 from model import RandomForestModel
 
 # Setup logging

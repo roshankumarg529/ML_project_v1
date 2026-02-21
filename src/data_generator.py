@@ -3,11 +3,14 @@ Generate dummy dataset for training the ML model
 """
 
 import logging
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 from sklearn.datasets import make_classification
-from pathlib import Path
-from config import DATA_DIR, DATASET_SAMPLES, N_FEATURES, N_CLASSES, RANDOM_STATE
+
+from config import (DATA_DIR, DATASET_SAMPLES, N_CLASSES, N_FEATURES,
+                    RANDOM_STATE)
 
 logger = logging.getLogger(__name__)
 

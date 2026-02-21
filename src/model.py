@@ -2,33 +2,21 @@
 Random Forest classifier model for classification task
 """
 
+import json
 import logging
 import pickle
-import json
+from pathlib import Path
+
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
+                             precision_score, recall_score)
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    confusion_matrix,
-)
-import json
-from pathlib import Path
-from config import (
-    MODEL_PATH,
-    PREPROCESSOR_PATH,
-    RANDOM_STATE,
-    TEST_SIZE,
-    N_ESTIMATORS,
-    MAX_DEPTH,
-    MIN_SAMPLES_SPLIT,
-    MIN_SAMPLES_LEAF,
-    MODELS_DIR,
-)
+from sklearn.preprocessing import StandardScaler
+
+from config import (MAX_DEPTH, MIN_SAMPLES_LEAF, MIN_SAMPLES_SPLIT, MODEL_PATH,
+                    MODELS_DIR, N_ESTIMATORS, PREPROCESSOR_PATH, RANDOM_STATE,
+                    TEST_SIZE)
 
 logger = logging.getLogger(__name__)
 
