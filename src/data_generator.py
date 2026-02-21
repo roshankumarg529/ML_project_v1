@@ -9,7 +9,8 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import make_classification
 
-from config import DATA_DIR, DATASET_SAMPLES, N_CLASSES, N_FEATURES, RANDOM_STATE
+from config import (DATA_DIR, DATASET_SAMPLES, N_CLASSES, N_FEATURES,
+                    RANDOM_STATE)
 
 logger = logging.getLogger(__name__)
 
