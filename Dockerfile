@@ -11,8 +11,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY src/ ./src/
 
-# Create directories for data and models
-RUN mkdir -p data models logs
+# Copy trained models
+COPY models/ ./models/
+
+# Create directories for data and logs
+RUN mkdir -p data logs
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
